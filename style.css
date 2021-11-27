@@ -1,0 +1,123 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.bodyStyling {
+	background-color: lightgoldenrodyellow;
+}
+
+.playingSectionContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 60%;
+}
+
+#pictureConfig {
+	width: 100%;
+	height: 310px;
+	border: 3px solid white;
+}
+
+.highScoreContainerTopMargin {
+	margin-top: 15px;
+}
+
+button.startButton {
+	border: 1px solid black;
+	height: 150px;
+}
+
+button.startButton:hover {
+	background-color: lightgray;
+	border: 1px solid black;
+}
+
+.hero-txt {
+	text-align: center;
+	color: brown;
+}
+
+.gameInstructions {
+	width: 100%;
+	border: 1px solid black;
+	margin-bottom: 5px;
+	padding: 10px;
+}
+
+#highScoreContainer {
+	width: 40%;
+	height: 310px;
+	background-color: lightgray;
+	border: 1px solid rgb(10, 24, 10);
+	position: relative;
+	padding: 5px;
+}
+
+#resetButtonContainer h3 {
+	color: brown;
+	text-decoration: underline;
+}
+
+.resetBtnStyling {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+button.guessButton {
+	border: 1px solid black;
+	height: 110px;
+	width: 100%;
+}
+
+button.guessButton:hover {
+	background-color: lightgray;
+	border: 1px solid black;
+}
+
+.mainStyling {
+	flex-direction: column;
+}
+
+.correctionContainer {
+	width: 100%;
+}
+
+@media only screen and (min-width: 420px) {
+	.correctionContainer {
+		width: 50%;
+	}
+}
+@media only screen and (min-width: 500px) {
+	.highScoreContainerTopMargin {
+		margin-top: 0px;
+	}
+	#highScoreContainer {
+		width: 20%;
+	}
+	.mainStyling {
+		flex-direction: row;
+	}
+	#highScoreContainer {
+		height: 310px;
+	}
+	button.guessButton {
+		width: 50%;
+	}
+}
+
+@media only screen and (min-width: 750px) {
+	.correctionContainer {
+		width: 33.3%;
+	}
+}
+
+@media only screen and (min-width: 850px) {
+	#highScoreContainer p {
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+}
