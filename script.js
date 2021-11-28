@@ -46,7 +46,9 @@ const missing_students = [
 	},
 ];
 
-// Setting the amount of guesses, right answers, time passed and the highscore to zero.
+// I wanted to add a fastest-time component to the game, so there would still be some purpose to playing it, even though you might have gotten all of the answers right.
+
+// Setting some default values.
 let amountOfGuessesMade = 0;
 let amountOfTotalGuesses = students.length;
 let rightAnswers = 0;
@@ -58,7 +60,7 @@ let timePassed = 1;
 let minutes = Math.floor(timePassed / 60);
 let seconds = timePassed % 60;
 
-// Declaring variables for storage of the best result.
+// Declaring variables for storage of the best time related result.
 let bestMinutes = Math.floor(bestTime / 60);
 let bestSeconds = bestTime % 60;
 
@@ -78,31 +80,28 @@ const correctionInstructions = document.querySelector('.correctionInstructions')
 const correctionContainer = document.querySelector('.correctionContainer');
 const winningMessage = document.querySelector('.winningMessage');
 
-// Creating paragraphs and appending them to the results display.
+// Creating certain paragraphs that will belong in the stats section.
 const scoreParagraph = document.createElement('P');
-resultDisplay.appendChild(scoreParagraph);
-const highScoreParagraph = document.createElement('P');
-resultDisplay.appendChild(highScoreParagraph);
 const timeParagraph = document.createElement('P');
-resultDisplay.appendChild(timeParagraph);
 const bestTimeParagraph = document.createElement('P');
-resultDisplay.appendChild(bestTimeParagraph);
+const highScoreParagraph = document.createElement('P');
+
+// Giving the highscore paragraph & score paragraph text-align-center through bootstrap class text-center.
+highScoreParagraph.classList.add('text-center');
+scoreParagraph.classList.add('text-center');
+timeParagraph.classList.add('text-center');
+bestTimeParagraph.classList.add('text-center');
 
 // Function that adds 1 to the seconds variable.
 function incrementSeconds() {
 	timePassed += 1;
 }
 
-// Using the setInterval method and passing in the incrementSeconds function aswell as 1000ms in interval, so that a 1 is added to the seconds variable, every 1000ms.
+// Using the setInterval method and passing in the incrementSeconds function aswell as 1000ms in interval, so that a 1 is added to the seconds variable, every 1000ms. Storing in variable interval which i can use as a direction for clearing the interval at some point.
 let interval = setInterval(incrementSeconds, 1000);
 
-// Giving the highscore container a bootstrap class of d-none so that it wont be present at the start.
+// Giving the highscore container a bootstrap class of d-none so that it wont be visible at the start.
 highScoreContainer.classList.add('d-none');
-// Giving the highscore paragraph & score paragraph text-align-center through bootstrap class text-center.
-highScoreParagraph.classList.add('text-center');
-scoreParagraph.classList.add('text-center');
-timeParagraph.classList.add('text-center');
-bestTimeParagraph.classList.add('text-center');
 
 // Creating element 'button' and appending it to the startbutton container.
 const startButton = document.createElement("BUTTON");
@@ -114,17 +113,17 @@ startButton.innerHTML = 'Start The Game By Clicking The Button!';
 
 // Adding event listener to the start button in order to initialize the game.
 startButton.addEventListener('click', e => {
-	// if the click-target contains the class startButton.
+	// Making sure the click event only executes the code if the target has a startButton class.
 	if (e.target.classList.contains('startButton')) {
-		// Remove the button container by adding the built in bootstrap class 'd-none'.
+		// Removing the button container by adding the built in bootstrap class 'd-none'.
 		startButtonContainer.setAttribute('class', 'd-none');
 		// Making sure the Hero text is displayed when the button is clicked.
 		heroTxt.classList.remove('d-none');
-		// Remove the already previously set class of d-none off of the gameDisplayContainer.
+		// Remove the already previously set class of d-none off of the playingSectionContainer.
 		playingSectionContainer.classList.remove("d-none");
 		// Remove the already previously set class of d-none off of the highScoreContainer.
 		highScoreContainer.classList.remove('d-none');
-		// Remove the already previously set class of d-none off of the result section.
+		// Remove the already previously set class of d-none off of the resultDisplay.
 		resultDisplay.classList.remove("d-none");
 		// Initializing the game.
 		startRound();
@@ -141,16 +140,16 @@ const shuffleArrayFunction = (array) => {
 	}
 }
 
-	// Initially shuffling the students array so that the first game of every new session doesnt look exactly the same.
-	shuffleArrayFunction(students);
+// Initially shuffling the students array so that the first game of every new session doesnt look exactly the same.
+shuffleArrayFunction(students);
 
-	// Function containing the game sequence logic.
-	const startRound = () => {
+// Function containing the game sequence logic.
+const startRound = () => {
 	// Taking the first 4 students out of the students array and placing them into variable studentRound.
 	let studentRound = students.slice(0, 4);
-	// Extracting the first student of the students array every round, and inserting him/her to the end of the students array.
-	s = students.shift();
-	students.push(s);
+	// Extracting the first student of the students array every round, and inserting him/her to the end of the students array making sure that the images change at each guess but also that tbe length of the students array remains the same.
+	shiftedStudent = students.shift();
+	students.push(shiftedStudent);
 	// Assigning the student at index 0 of the students array to being the current student in question.
 	currentStudent = students[0];
 	// Extracting the URL from the current student and placing it into the student image's src.
@@ -159,7 +158,7 @@ const shuffleArrayFunction = (array) => {
 	shuffleArrayFunction(studentRound);
 	// Resetting the contents of the buttons so that 4 new buttons are created at every click event and in turn REPLACING the 4 old buttons instead of 4 buttons just being added to the pile making it 8, 12, 16 etc...
 	guessingSection.innerHTML = "";
-	// Mapping out the names of the chosen 4 students and placing them in 'studentRoundNames'.
+	// Mapping out the names of the chosen 4 students and placing them in variable 'studentRoundNames'.
 	let studentRoundNames = studentRound.map((student => student.name));
 	// Iterating through each student name and adding a button for each one, with classes to make them look better.
 	studentRoundNames.forEach(studentName => {
@@ -171,10 +170,11 @@ const shuffleArrayFunction = (array) => {
 guessingSection.addEventListener('click', e => {
 	// Making sure that the code only executes by hitting the intented target (the button), and not anything else within the container.
 	if (e.target.tagName === ('BUTTON')) {
-		// Pushing the current student object into the given answers array.
+		// Pushing the current student object into the initially empty given answers array.
 		givenAnswersArr.push(currentStudent);
 		// Adding a conditional which checks if the user gets the answer right.
 		if (e.target.innerText === currentStudent.name) {
+			// Adding answer: true; to the objects of the students that the user answers correcly on.
 			currentStudent.answer = true;
 			// Initializing new round.
 			startRound();
@@ -185,6 +185,7 @@ guessingSection.addEventListener('click', e => {
 		} 
 		// Adding a conditional which checks if the user gets the answer wrong.
 		else {
+			// Adding answer: false; to the objects of the students that the user answers incorrectly on.
 			currentStudent.answer = false;
 			// Initializing new round.
 			startRound();
@@ -193,29 +194,30 @@ guessingSection.addEventListener('click', e => {
 		}
 	}
 
-	// Filtering out the wrong answers found in the given answers array and putting them in the empty 'filteredArray' array.
-	let filteredArray = givenAnswersArr.filter((studentObject) => {
+	// Filtering out the wrong answers found in the given answers array and putting them in the empty 'filteredAnswersArray' array.
+	let filteredAnswersArray = givenAnswersArr.filter((studentObject) => {
 		if (studentObject.answer === false)
 		return studentObject;
 	})
 
-	// Checking for when the game is supposed to finish
+	// Checking for when the round is over
 	if (amountOfGuessesMade === students.length) {
-	// Stopping the setInterval from counting.
+	// Removing any highscore paragraph that might have been created.
+	highScoreParagraph.innerHTML = ``;
+	// Stopping the setInterval from counting the seconds.
 	clearInterval(interval);
 	// Removing the margin from in between the image and the buttons, when the game is over, in order to match the stats menu with the image. 
 	guessingSection.classList.remove('mt-3');
 	// Printing out the filtered out wrong answers to the DOM and styling the containers.
-	filteredArray.forEach(wrongAnswer => {
+	filteredAnswersArray.forEach(wrongAnswer => {
 	correctionContainer.innerHTML += 
 		`<div class="correctionContainer d-flex flex-column mt-2">
 		<h5 class="text-center" style="color:green">${wrongAnswer.name}</h5>
 		<i class="fas fa-arrow-down text-center"></i>
-		<img src='${wrongAnswer.image}' height="200px" style='border: 10px solid red; margin: 10px; display:inline;'>
+		<img src='${wrongAnswer.image}' height="200px" style='border: 10px solid red; margin: 10px;'>
 		</img>
 		</div>`
 	}) 
-
 	// Making it so that the correctionInstructions and correctioncontainer appear.
 	correctionInstructions.classList.remove('d-none')
 	correctionContainer.classList.remove('d-none');
@@ -227,52 +229,84 @@ guessingSection.addEventListener('click', e => {
 	// Removing the image header once the first game is finished.
 	gameInstructions.classList.add('d-none');
 
-	// Adding a conditional that checks if the amount of right answers is larger than the current highscore.
+	// Adding a conditional that checks if the amount of current right answers is smaller or equal to the current highscore.
+	if (highScore >= rightAnswers) {
+		// Appending a score / results paragraph to the resultsDisplay that prints out the round points.
+		resultDisplay.appendChild(scoreParagraph);
+		scoreParagraph.innerHTML = (`Result: ${rightAnswers}/${amountOfGuessesMade} correct answers!`);
+	}
+	// If the highscore is greater than or equal to the amount of right answers, and the best time is greater than 0 (or if the amount of right answers is the same as the high score ) print the paragraphs into the result section.	
+	if (highScore >= rightAnswers && bestTime > 0 || rightAnswers === highScore) {
+		resultDisplay.appendChild(scoreParagraph);
+		scoreParagraph.innerHTML = (`Result: ${rightAnswers}/${amountOfGuessesMade} correct answers!`);
+		highScoreParagraph.innerHTML += `Highscore is still: ${highScore}/${amountOfGuessesMade} correct answers.`;		
+	}
+	// Adding a conditional that checks if the amount of right answers is greater than the high score
 	if (rightAnswers > highScore) {
 		// Each time the amount of right answers exceed the highscore number, reassigns the highscore to the new amount of right answers.
 		highScore = rightAnswers;
+		// Resetting the score paragraph.
+		scoreParagraph.innerHTML = "";
 		// Replacing the old highscore paragraph with the new one.
+		resultDisplay.appendChild(highScoreParagraph);
 		highScoreParagraph.innerHTML = "";
-		highScoreParagraph.innerHTML += `Nice! New highscore: ${highScore}/${amountOfGuessesMade} correct answers!`;
+		highScoreParagraph.innerHTML += `Nice! New best answers: ${highScore}/${amountOfGuessesMade} correct answers!`;
 	} 
-	// Checking for every time that a new highscore isn't reached.
-	else if (rightAnswers < highScore){
+	// Checking if during the game, a user has gotten every guess right once already, and executes the code (prints these paragraphs into the results section) if the current high score is greater than the amount of current right answers.
+	else if (rightAnswers < highScore && highScore === amountOfTotalGuesses) {
+		highScoreParagraph.innerHTML = ``;
+		resultDisplay.appendChild(scoreParagraph);
+		scoreParagraph.innerHTML = (`Result: ${rightAnswers}/${amountOfGuessesMade} correct answers!`);
+		highScoreParagraph.innerHTML += `Highscore is still: ${highScore}/${amountOfGuessesMade} correct answers in ${bestMinutes}m ${bestSeconds}s`;	
+	}
+	// Checking if during the game, a user hasn't yet gotten every guess right, and executes the code (prints these paragraphs into the results section) if the current high score is greater than the amount of current right answers.
+	else if (rightAnswers < highScore && highScore != amountOfGuessesMade){
 		// Telling the user that their highscore is still the same as their previous one.
+		resultDisplay.appendChild(highScoreParagraph);
 		highScoreParagraph.innerHTML = "";
 		highScoreParagraph.innerHTML += `Highscore is still: ${highScore}/${amountOfGuessesMade} correct answers.`;
 	}
-	// if the user gets all of the guesses right, display a winning message instead of a correction instruction.
+	// Adding a conditional to check if the user has gotten all of the answers right
 	if (rightAnswers === amountOfGuessesMade){
+		// displaying a winning message instead of a correction instruction.
 		winningMessage.classList.remove('d-none');
 		correctionInstructions.classList.add('d-none');
 
+		// Adding the minutes and seconds logic again.
 		minutes = Math.floor(timePassed / 60);
 		seconds = timePassed % 60;
-		console.log(timePassed)
-
-		console.log(timePassed)
+		// Appending the timeparagraph to the results section and printing the text.
+		resultDisplay.appendChild(timeParagraph);
 		timeParagraph.innerHTML = `Time: ${minutes}m ${seconds}s`;
-		if (timePassed > 0 & bestTime === 0) {
+
+		// If the second that passed during the last round were greater than 0 AND the best time is 0 at the same time ( or if the best time is greater than the amount of time passed):
+		if (timePassed > 0 & bestTime === 0 || bestTime > timePassed) {
+			// Making the current minutes and seconds the best minutes and seconds
 			bestMinutes = minutes;
 			bestSeconds = seconds;
+			// Making the best time, the current time passed.
 			bestTime = timePassed;
-			bestTimeParagraph.innerHTML = ``;
-			bestTimeParagraph.innerHTML = `New highscore: ${highScore}/${amountOfTotalGuesses} correct answers in: ${bestMinutes}m ${bestSeconds}s!`	
-
-		}
-		if (bestTime > timePassed) {
-			bestMinutes = minutes;
-			bestSeconds = seconds;		
-			bestTime = timePassed;
+			// Printing out the new best score and time text
+			resultDisplay.appendChild(bestTimeParagraph);
 			bestTimeParagraph.innerHTML = ``;
 			bestTimeParagraph.innerHTML = `New highscore: ${highScore}/${amountOfTotalGuesses} correct answers in: ${bestMinutes}m ${bestSeconds}s!`	
 		}
+		// If the user has gotten all the answers right previously and the seconds it took to complete this round were higher than the best time he/she ever got - execute the code (prints these paragraphs into the results section).
+		if (seconds > bestTime) {
+		timeParagraph.innerHTML = `Time: ${minutes}m ${seconds}s`;
+		highScoreParagraph.innerHTML = "";
+		highScoreParagraph.innerHTML += `Highscore is still: ${highScore}/${amountOfGuessesMade} correct answers in: ${bestMinutes}m ${bestSeconds}s!`;
+		} 
+		// If the user has gotten all the answers right previously and the seconds it took to complete this round were fewer than the previous best time he/she ever got - execute the code (prints these paragraphs into the results section).
+		else {
+			highScoreParagraph.innerHTML = ''
+			scoreParagraph.innerHTML = ''
+			scoreParagraph.innerHTML = `Result: ${rightAnswers}/${amountOfGuessesMade} correct answers!`;
+			timeParagraph.innerHTML = `New best time: ${minutes}m ${seconds}s`;
+			bestTimeParagraph.innerHTML = ``;
+			bestTimeParagraph.innerHTML = `New highscore: ${highScore}/${amountOfTotalGuesses} correct answers in: ${bestMinutes}m ${bestSeconds}s!`				
+		}
 	}
-	if (rightAnswers === amountOfGuessesMade & highScore === amountOfGuessesMade){
-		highScoreParagraph.innerHTML = '';
-	}
-	// Telling the user how many points he/she scored.
-	scoreParagraph.innerHTML = (`Result: ${rightAnswers}/${amountOfGuessesMade} correct answers!`);
 }
 })
 
@@ -280,28 +314,21 @@ guessingSection.addEventListener('click', e => {
 resultDisplay.addEventListener('click', e => {
 	// Checking if the click-target is on the button.
 	if (e.target.tagName === ('BUTTON')) {
-	// Creating more generic best time message, while the new game is running.
-	// bestTimeParagraph.innerHTML = `Best time: ${bestMinutes}m ${bestSeconds}s`;
 	// Resetting the time passed so that a new count can begin.
 	seconds = 0;
 	minutes = 0;
 	timePassed = 1;
-
 	// Adding a clearInterval prior to starting the count again. This fixed a bug which entailed there being a possibility for interval counters to stack, if user mistakenly clicked the new game button twice. Adding a clearInterval before initializing a new count fixed this problem.
 	clearInterval(interval);
 	// Function that adds a 1 to the seconds variable and prints a paragraph out into the results section.
 	function incrementSeconds() {
-		console.log(timePassed)
 		timePassed += 1;
 	}
-
-	// Using the setInterval method and passing in the incrementSeconds function aswell as 1000ms in interval, so that a 1 is added to the seconds variable, every 1000ms.
+	// Using the setInterval method again so that it starts the count as soon as the reset button is clicked.
 	interval = setInterval(incrementSeconds, 1000);
-
 	// Clearing the timeParagraph & bestTimeParagraph on reset.
 	timeParagraph.innerHTML = '';
 	bestTimeParagraph.innerHTML = '';
-
 	// Returning the display:none to the winningMessage and therefore resetting it.
 	winningMessage.classList.add('d-none');
 	// Adding the margin back from in between buttons and image.
@@ -315,10 +342,15 @@ resultDisplay.addEventListener('click', e => {
 	givenAnswersArr = [];
 	// Shuffling students array so that the order is once again randomised.
 	shuffleArrayFunction(students);
+	// Prints a more generic highscore text containing both score and time ( if the user has unlocked the time component of the game, by getting all the answers right ).
 	if (highScore === amountOfGuessesMade) {
+		resultDisplay.appendChild(highScoreParagraph);
 		highScoreParagraph.innerHTML = `Highscore: ${highScore}/${amountOfTotalGuesses} correct answers in: ${bestMinutes}m ${bestSeconds}s`
-	} else {
+	} 
+	// Prints a more generic highscore text with only the score, because the user hasn't unlocked the time component of the game yet.
+	else {
 		// Replacing the highscore paragraph with a more generic one to look at during the new game.
+		resultDisplay.appendChild(highScoreParagraph);
 		highScoreParagraph.innerHTML = `Highscore: ${highScore}/${amountOfTotalGuesses} correct answers`;
 	}
 	// Removing the paragraph that details the score, since we are in the process of generating a new one.

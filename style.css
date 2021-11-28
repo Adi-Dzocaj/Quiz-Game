@@ -56,15 +56,22 @@ button.startButton:hover {
 	padding: 5px;
 }
 
+/* #resetButtonContainer p {
+	font-size: 10px;
+}
 #resetButtonContainer h3 {
 	color: brown;
 	text-decoration: underline;
-}
+} */
 
 .resetBtnStyling {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
+}
+
+.resetBtnStyling {
+	font-size: 10px;
 }
 
 button.guessButton {
@@ -84,6 +91,10 @@ button.guessButton:hover {
 
 .correctionContainer {
 	width: 100%;
+}
+
+#resultDisplay p {
+	font-size: 10px;
 }
 
 @media only screen and (min-width: 420px) {
@@ -110,14 +121,18 @@ button.guessButton:hover {
 }
 
 @media only screen and (min-width: 750px) {
-	.correctionContainer {
-		width: 33.3%;
-	}
+	.resetBtnStyling {
+	font-size: 10px;
 }
 
-@media only screen and (min-width: 850px) {
-	#highScoreContainer p {
-		margin-left: 5px;
-		margin-right: 5px;
+}
+@media only screen and (min-width: 750px) {
+	#resultDisplay p {
+	font-size: 14px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+	.correctionContainer {
+		width: 33.3%;
 	}
 }
