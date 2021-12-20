@@ -333,7 +333,7 @@ guessingSection.addEventListener('click', e => {
 	// Filtering out the wrong answers found in the given answers array and putting them in the empty 'filteredAnswersArray' array.
 	let filteredAnswersArray = givenAnswersArr.filter((studentObject) => {
 		if (studentObject.answer === false)
-		return studentObject;
+		return true;
 	})
 
 	// Checking for when the round is over
