@@ -17,7 +17,7 @@
 
 #pictureConfig {
 	width: 100%;
-	height: 310px;
+	height: auto;
 	border: 3px solid white;
 }
 
@@ -55,14 +55,6 @@ button.startButton:hover {
 	position: relative;
 	padding: 5px;
 }
-
-/* #resetButtonContainer p {
-	font-size: 10px;
-}
-#resetButtonContainer h3 {
-	color: brown;
-	text-decoration: underline;
-} */
 
 .resetBtnStyling {
 	position: absolute;
@@ -136,3 +128,5 @@ button.guessButton:hover {
 		width: 33.3%;
 	}
 }
+
+
