@@ -346,6 +346,17 @@ guessingSection.addEventListener('click', e => {
 	guessingSection.classList.remove('mt-3');
 	// Printing out the filtered out wrong answers to the DOM and styling the containers.
 	filteredAnswersArray.forEach(wrongAnswer => {
+	// Code after changes
+	correctionContainer.innerHTML += 
+	`<div class="correctionContainer d-flex flex-column mt-2">
+	<h5 class="text-center" style="color:green">${wrongAnswer.name}</h5>
+	<i class="fas fa-arrow-down text-center"></i>
+	<img src='${wrongAnswer.image}'style='border: 10px solid red; margin: 10px; height:auto;'>
+	</img>
+	</div>`
+	}) 
+	// Code before changes
+	/*
 	correctionContainer.innerHTML += 
 		`<div class="correctionContainer d-flex flex-column mt-2">
 		<h5 class="text-center" style="color:green">${wrongAnswer.name}</h5>
@@ -354,6 +365,7 @@ guessingSection.addEventListener('click', e => {
 		</img>
 		</div>`
 	}) 
+	*/
 	// Making it so that the correctionInstructions and correctioncontainer appear.
 	correctionInstructions.classList.remove('d-none')
 	correctionContainer.classList.remove('d-none');
