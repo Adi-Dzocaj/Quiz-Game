@@ -12,7 +12,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 60%;
+	width: 80%;
 }
 
 #pictureConfig {
@@ -104,6 +104,11 @@ button.guessButton:hover {
 	.mainStyling {
 		flex-direction: row;
 	}
+
+	.playingSectionContainer {
+		width: 60%;
+	}
+
 	#highScoreContainer {
 		height: 310px;
 	}
@@ -114,19 +119,16 @@ button.guessButton:hover {
 
 @media only screen and (min-width: 750px) {
 	.resetBtnStyling {
-	font-size: 10px;
-}
-
+		font-size: 10px;
+	}
 }
 @media only screen and (min-width: 750px) {
 	#resultDisplay p {
-	font-size: 14px;
-	margin-left: 5px;
-	margin-right: 5px;
-}
+		font-size: 14px;
+		margin-left: 5px;
+		margin-right: 5px;
+	}
 	.correctionContainer {
 		width: 33.3%;
 	}
 }
-
-
