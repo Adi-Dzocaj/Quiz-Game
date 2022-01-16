@@ -249,8 +249,6 @@ startButton.innerHTML = 'Start The Game By Clicking The Button!';
 
 // Adding event listener to the start button in order to initialize the game.
 startButton.addEventListener('click', e => {
-	// Making sure the click event only executes the code if the target has a startButton class.
-	if (e.target.tagName === 'BUTTON') {
 		// Removing the button container by adding the built in bootstrap class 'd-none'.
 		startButtonContainer.setAttribute('class', 'd-none');
 		// Making sure the Hero text is displayed when the button is clicked.
@@ -263,7 +261,6 @@ startButton.addEventListener('click', e => {
 		resultDisplay.classList.remove("d-none");
 		// Initializing the game.
 		startRound();
-	}
 })
 
 // Fischer-Yates Shuffle - used for shuffling arrays.
