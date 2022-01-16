@@ -66,6 +66,10 @@ button.startButton:hover {
 	font-size: 10px;
 }
 
+#studentImage {
+	width: 100%;
+	height: auto;
+}
 button.guessButton {
 	border: 1px solid black;
 	height: 110px;
